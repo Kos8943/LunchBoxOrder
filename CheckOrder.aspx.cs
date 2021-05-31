@@ -39,6 +39,9 @@ namespace LunchBoxOrder
 
                 this.OrderRepeater.DataSource = methods.GetOrder(Sid);
                 this.OrderRepeater.DataBind();
+
+                this.TotalCountRepeater.DataSource = methods.GetCountTotal(Sid);
+                this.TotalCountRepeater.DataBind();
             }
             
 
@@ -86,7 +89,15 @@ namespace LunchBoxOrder
 
         protected void OrderRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-
+            string comName = e.CommandName;
+            string[] comarug = e.CommandArgument.ToString().Split(',');
+            DataBaseMethods methods = new DataBaseMethods();
+            if ("Delete" == comName)
+            {
+                methods.DelectOrderDetail(Convert.ToInt32(comarug[0]), Convert.ToInt32(comarug[1]));
+            }
+            string Sid = Request.QueryString["Sid"];
+            Response.Redirect($"~/CheckOrder.aspx?Sid={Sid}");
         }
 
         protected void QtyDropDownList_SelectedIndexChanged(object sender, EventArgs e)
@@ -133,6 +144,27 @@ namespace LunchBoxOrder
             methods.InsertOrder(orderModels);
             orderModels.Clear();
             Response.Redirect($"~/CheckOrder.aspx?Sid={Sid}");
+        }
+
+        int totalPrice;
+        protected void TotalCountRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            
+
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView dr = e.Item.DataItem as DataRowView;
+                totalPrice += Convert.ToInt32(dr["Qty"]) * Convert.ToInt32(dr["Price"]);
+
+            }
+
+            if(e.Item.ItemType == ListItemType.Footer)
+            {
+                Literal literal = (Literal)e.Item.FindControl("TotalPriceLiteral");
+
+                literal.Text = $"總計:{totalPrice}";
+            }
+            
         }
     }
 }

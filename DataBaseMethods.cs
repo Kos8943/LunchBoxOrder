@@ -142,5 +142,37 @@ namespace LunchBoxOrder
 
             
         }
+
+        public DataTable DelectOrderDetail(int accountSid, int GroupSid)
+        {
+            string queryString = $@"DELETE [Order] WHERE AccountSid = @AccountSid AND GroupSid = @GroupSid;";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@AccountSid", accountSid),
+               new SqlParameter("@GroupSid", GroupSid),
+            };
+
+            var dt = this.GetDataTable(queryString, parameters);
+            return dt;
+        }
+
+        public DataTable GetCountTotal(int Sid)
+        {
+            string queryString = $@"SELECT [Order].MenuSid, Menu.FoodName, sum([Order].Qty) AS Qty, Menu.Price FROM [Group] 
+                                    JOIN [Order] ON [Group].Sid = [Order].GroupSid 
+                                    JOIN [Menu] ON [Order].MenuSid = Menu.Sid
+                                    WHERE [Group].Sid = @Sid
+                                    Group by FoodName, [Order].MenuSid, Menu.Price;";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@Sid", Sid)
+            };
+
+            var dt = this.GetDataTable(queryString, parameters);
+
+            return dt;
+        }
     }
 }

@@ -70,6 +70,10 @@
             width: 100px;
             height: 35px;
         }
+
+        .totalOrderArea{
+            overflow:auto;
+        }
     </style>
 </head>
 <body>
@@ -88,6 +92,19 @@
                         <asp:ListItem Value="2" Text="已到"></asp:ListItem>
                     </asp:DropDownList>
                     <asp:Button ID="btnChangeStatus" runat="server" Text="修改狀態" />
+                    <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+                        <div class="totalOrderArea">
+                            <asp:Repeater ID="TotalCountRepeater" runat="server" OnItemDataBound="TotalCountRepeater_ItemDataBound">
+                                <ItemTemplate>
+                                    <p><%# Eval("FoodName") %> x <%# Eval("Qty") %></p>
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    <asp:Literal ID="TotalPriceLiteral" runat="server"></asp:Literal>
+                                </FooterTemplate>
+                            </asp:Repeater>
+                        </div>
+                    </asp:PlaceHolder>
+
                 </div>
             </div>
 
@@ -140,7 +157,7 @@
                     <ItemTemplate>
                         <div class="col-4 p-4">
                             <div class="row OrderBorder">
-                                <asp:Button ID="DeleteOrder" CssClass="btnDeleteOrder" runat="server" Text="X" CommandName="Delete" CommandArgument='<%# Eval("AccountSid") %>' />
+                                <asp:Button ID="DeleteOrder" CssClass="btnDeleteOrder" runat="server" Text="X" CommandName="Delete" CommandArgument='<%# Eval("AccountSid") + "," + Eval("GroupSid") %>' />
                                 <img src="Imgs/ochaduke.png" class="OrderImg" />
                                 <div class="col-5 OrderListArea">
                                     <asp:Repeater ID="OrderDetailRepeater" runat="server">
@@ -168,7 +185,7 @@
                         </ItemTemplate>
                     </asp:Repeater>
                 </div>
-                <asp:Button ID="btnConfirm" runat="server" Text="OK" OnClick="btnConfirm_Click"/>
+                <asp:Button ID="btnConfirm" runat="server" Text="OK" OnClick="btnConfirm_Click" />
             </div>
             <div class="m-3 pr-4 d-flex flex-row-reverse">
                 <asp:Button ID="btnTurnBack" runat="server" Text="返回" />
