@@ -11,6 +11,14 @@ namespace LunchBoxOrder
 {
     public partial class CreatOrder : System.Web.UI.Page
     {
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            DataBaseMethods methods = new DataBaseMethods();
+            this.ShopName.DataSource = methods.GetAllShop();
+            this.ShopName.DataTextField = "ShopName";
+            this.ShopName.DataValueField = "Sid";
+            this.ShopName.DataBind();
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             //if (!LoginHelper.HasLogined())
@@ -19,11 +27,7 @@ namespace LunchBoxOrder
             //    Response.Write("<script language=javascript>window.location.href='Login.aspx'</script>");
             //}
 
-            DataBaseMethods methods = new DataBaseMethods();
-            this.ShopName.DataSource = methods.GetAllShop();
-            this.ShopName.DataTextField = "ShopName";
-            this.ShopName.DataValueField = "Sid";
-            this.ShopName.DataBind();
+            
 
         }
 
@@ -47,6 +51,7 @@ namespace LunchBoxOrder
             model.ShopSid = Convert.ToInt32(this.ShopName.SelectedValue);
             model.GroupImgName = this.FoodDropList.SelectedValue;
             model.GroupName = GroupName;
+            model.GroupStatus = 0;
 
             DataBaseMethods methods = new DataBaseMethods();
             methods.CreateGroup(model);

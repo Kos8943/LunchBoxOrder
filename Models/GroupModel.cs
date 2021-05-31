@@ -18,5 +18,7 @@ namespace LunchBoxOrder.Models
         public string GroupImgName { get; set; }
 
         public string GroupName { get; set; }
+
+        public int GroupStatus { get; set; }
     }
 }

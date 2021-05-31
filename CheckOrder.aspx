@@ -110,11 +110,11 @@
                             <div class="row MenuBorder">
                                 <img src="Imgs/funamori.png" class="MenuImg" />
                                 <div class="p-3">
-                                    <p><%# Eval("FoodName") %></p>
+                                    <p class="foodName"><%# Eval("FoodName") %></p>
                                     <span>NT$ <%# Eval("Price") %></span>
                                     <div>
                                         <span>數量:</span>
-                                        <asp:DropDownList ID="DropDownList1" runat="server">
+                                        <asp:DropDownList CssClass="QtyDropList" ID="QtyDropDownList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="QtyDropDownList_SelectedIndexChanged" ToolTip='<%# Eval("FoodName")+","+ Eval("MenuSid") %>'>
                                             <asp:ListItem Value="0" Text="0"></asp:ListItem>
                                             <asp:ListItem Value="1" Text="1"></asp:ListItem>
                                             <asp:ListItem Value="2" Text="2"></asp:ListItem>
@@ -140,7 +140,7 @@
                     <ItemTemplate>
                         <div class="col-4 p-4">
                             <div class="row OrderBorder">
-                                <asp:Button ID="DeleteOrder" CssClass="btnDeleteOrder" runat="server" Text="X" CommandName="Delete" CommandArgument='<%# Eval("AccountSid") %>'/>
+                                <asp:Button ID="DeleteOrder" CssClass="btnDeleteOrder" runat="server" Text="X" CommandName="Delete" CommandArgument='<%# Eval("AccountSid") %>' />
                                 <img src="Imgs/ochaduke.png" class="OrderImg" />
                                 <div class="col-5 OrderListArea">
                                     <asp:Repeater ID="OrderDetailRepeater" runat="server">
@@ -148,7 +148,7 @@
                                             <p><%# Eval("FoodName") %> * <%# Eval("Qty") %></p>
                                         </ItemTemplate>
                                     </asp:Repeater>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -161,25 +161,14 @@
             <%-- ----確認區域---- --%>
             <div class="row m-3 p-3 ConfirmAreaBorder">
                 <img src="Imgs/perimeni.png" class="OrderImg" />
-                <div class="row ml-5">
-                    <div class="col-12">
-                        <span>三杯</span>
-                        <span>X6</span>
-                    </div>
-                    <div class="col-12">
-                        <span>三杯</span>
-                        <span>X6</span>
-                    </div>
-                    <div class="col-12">
-                        <span>三杯</span>
-                        <span>X6</span>
-                    </div>
-                    <div class="col-12">
-                        <span>三杯</span>
-                        <span>X6</span>
-                    </div>
+                <div class="ml-5 orderFoodList">
+                    <asp:Repeater ID="OrderConfirmRepeater" runat="server">
+                        <ItemTemplate>
+                            <p><%# Eval("FoodName") %> x <%# Eval("Qty") %></p>
+                        </ItemTemplate>
+                    </asp:Repeater>
                 </div>
-                <asp:Button ID="btnConfirm" runat="server" Text="OK" />
+                <asp:Button ID="btnConfirm" runat="server" Text="OK" OnClick="btnConfirm_Click"/>
             </div>
             <div class="m-3 pr-4 d-flex flex-row-reverse">
                 <asp:Button ID="btnTurnBack" runat="server" Text="返回" />
@@ -189,5 +178,26 @@
             <%-- ----確認區域---- --%>
         </div>
     </form>
+
+    <%--<script>
+        $(".QtyDropList").change(function () {
+            var foodName = $(this).parent().parent().children("p.foodName").text();
+            var Qty = $(this).val();
+            
+
+            $(".orderFoodList").append(`<p>${foodName} X${Qty}</p>`);
+
+            //var orderFoodListAry = $(".orderFoodList").children();
+
+            //if (orderFoodListAry.length == 0) {
+                
+            //    $(".orderFoodList").html(`<p>${foodName} X${Qty}</p>`);
+            //}
+            //else {
+            //    console.log(orderFoodListAry[0]);
+
+            //}
+        });
+    </script>--%>
 </body>
 </html>

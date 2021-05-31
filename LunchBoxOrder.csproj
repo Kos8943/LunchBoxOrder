@@ -77,6 +77,7 @@
     <Content Include="Bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Bootstrap\js\bootstrap.js" />
     <Content Include="Bootstrap\js\bootstrap.min.js" />
+    <Content Include="ChangePages.ascx" />
     <Content Include="CheckOrder.aspx" />
     <Content Include="CreatOrder.aspx" />
     <Content Include="Global.asax" />
@@ -90,6 +91,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangePages.ascx.cs">
+      <DependentUpon>ChangePages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePages.ascx.designer.cs">
+      <DependentUpon>ChangePages.ascx</DependentUpon>
+    </Compile>
     <Compile Include="CheckOrder.aspx.cs">
       <DependentUpon>CheckOrder.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -128,6 +136,7 @@
     <Compile Include="Managers\AccountManager.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="LunchBoxOrder.Index" %>
 
+<%@ Register Src="~/ChangePages.ascx" TagPrefix="uc1" TagName="ChangePages" %>
+
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -31,8 +34,8 @@
         <div class="container my-5 px-5 py-3 GroupBorder">
             <div class="row">
                 <div class="col-12">
-                    <asp:TextBox ID="TxtSearch" runat="server"></asp:TextBox>
-                    <asp:Button ID="btnSearch" runat="server" Text="搜尋" />
+                    <asp:TextBox ID="TxtSearch" runat="server" Placeholder="團名"></asp:TextBox>
+                    <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click"/>
                     <asp:Button ID="btnLogin" runat="server" Text="登入" OnClick="btnLogin_Click" />
                     <asp:Button ID="CreatGroup" runat="server" Text="揪團" OnClick="CreatGroup_Click" />
                 </div>
@@ -51,11 +54,9 @@
                         </a>
                     </ItemTemplate>
                 </asp:Repeater>
-
-
-
             </div>
         </div>
+        <uc1:ChangePages runat="server" ID="ChangePages" />
     </form>
 </body>
 </html>
