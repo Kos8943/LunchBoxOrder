@@ -51,16 +51,16 @@ namespace LunchBoxOrder
             string wherestring = string.Empty;
             if (!string.IsNullOrWhiteSpace(groupName))
             {
-                wherestring = "WHERE GroupName LIKE @GroupName";
+                wherestring = "AND GroupName LIKE @GroupName";
             }
 
             string queryString = $@"SELECT TOP 5 * FROM 
                                     (SELECT [Group].[Sid], [Group].GroupImgName, [Group].GroupName, Shop.ShopName,
                                     ROW_NUMBER() OVER(ORDER BY [Group].[Sid] )  AS ROWSID FROM [Group]
-                                    JOIN Shop ON [Group].ShopSid = Shop.Sid {wherestring}) a
+                                    JOIN Shop ON [Group].ShopSid = Shop.Sid WHERE [Group].GroupStatus != 2 {wherestring}) a
                                     WHERE ROWSID > {pageSize * (currentPage - 1)};";
 
-            var countQuery = $@"SELECT COUNT([Sid]) From [Group] {wherestring};";
+            var countQuery = $@"SELECT COUNT([Sid]) From [Group] WHERE [Group].GroupStatus != 2 {wherestring};";
 
             List<SqlParameter> parameters = new List<SqlParameter>()
             {
@@ -91,10 +91,11 @@ namespace LunchBoxOrder
 
         public DataTable GetOrder(int Sid)
         {
-            string queryString = $@"SELECT GroupSid, AccountSid, WhoOrder 
+            string queryString = $@"SELECT GroupSid, AccountSid, WhoOrder, UserImgName
                                     FROM [Order]
-                                    Where GroupSid = @Sid 
-                                    Group By AccountSid, WhoOrder, GroupSid;";
+                                    JOIN [UserAccount] ON [Order].AccountSid = [UserAccount].Sid
+                                    Where GroupSid = @Sid
+                                    Group By AccountSid, WhoOrder, GroupSid, UserImgName;";
 
             List<SqlParameter> parameters = new List<SqlParameter>()
             {

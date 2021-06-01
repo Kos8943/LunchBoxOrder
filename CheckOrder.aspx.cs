@@ -37,6 +37,7 @@ namespace LunchBoxOrder
                 this.GroupImg.Src = $"~/Imgs/{dt.Rows[0]["GroupImgName"]}";
                 this.GroupStatusDropList.SelectedValue = dt.Rows[0]["GroupStatus"].ToString();
                 this.Status = (int)dt.Rows[0]["GroupStatus"];
+                
 
                 this.MenuRepeater.DataSource = dt;
                 this.MenuRepeater.DataBind();
@@ -48,12 +49,21 @@ namespace LunchBoxOrder
                 this.TotalCountRepeater.DataBind();
 
                 LoginInfo loginInfo = HttpContext.Current.Session["IsLogined"] as LoginInfo;
+                if(LoginHelper.HasLogined())
+                {
+                    this.UserImgName.Src = $"Imgs/{loginInfo.UserImgName}";
+                }
+                else
+                {
+                    this.btnConfirm.Enabled = false;
+                }
+                
                 if (loginInfo == null || loginInfo.UserName != dt.Rows[0]["GroupLeader"].ToString())
                 {
                     this.GroupStatusDropList.Enabled = false;
                     this.PlaceHolder1.Visible = false;
                     this.btnChangeStatus.Enabled = false;
-                    this.btnConfirm.Enabled = false;
+                    
                 }
 
             }
@@ -216,6 +226,11 @@ namespace LunchBoxOrder
                 DataBaseMethods methods = new DataBaseMethods();
                 methods.UpdateGroupStatus(queryGroupSid, statusChange);
                 Response.Write("<Script language='JavaScript'>alert('修改成功');</Script>");
+
+                if(statusChange == 2)
+                {
+                    Response.Write($"<script language=javascript>window.location.href='Index.aspx'</script>");
+                }
             }
         }
 

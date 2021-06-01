@@ -129,7 +129,7 @@
                     <ItemTemplate>
                         <div class="col-4 p-4">
                             <div class="row MenuBorder">
-                                <img src="Imgs/funamori.png" class="MenuImg" />
+                                <img src="Imgs/<%# Eval("FoodImg") %>" class="MenuImg" />
                                 <div class="p-3">
                                     <p class="foodName"><%# Eval("FoodName") %></p>
                                     <span>NT$ <%# Eval("Price") %></span>
@@ -162,7 +162,7 @@
                         <div class="col-4 p-4">
                             <div class="row OrderBorder">
                                 <asp:Button ID="DeleteOrder" CssClass="btnDeleteOrder" runat="server" Text="X" CommandName="Delete" CommandArgument='<%# Eval("AccountSid") + "," + Eval("GroupSid") %>' />
-                                <img src="Imgs/ochaduke.png" class="OrderImg" />
+                                <img src="Imgs/<%# Eval("UserImgName") %>" class="OrderImg" />
                                 <div class="col-5 OrderListArea">
                                     <asp:Repeater ID="OrderDetailRepeater" runat="server">
                                         <ItemTemplate>
@@ -181,7 +181,7 @@
 
             <%-- ----確認區域---- --%>
             <div class="row m-3 p-3 ConfirmAreaBorder">
-                <img src="Imgs/perimeni.png" class="OrderImg" />
+                <img src="Imgs/perimeni.png" class="OrderImg" runat="server" id="UserImgName"/>
                 <div class="ml-5 orderFoodList">
                     <asp:Repeater ID="OrderConfirmRepeater" runat="server">
                         <ItemTemplate>

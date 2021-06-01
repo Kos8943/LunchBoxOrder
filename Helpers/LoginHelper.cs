@@ -48,7 +48,8 @@ namespace LunchBoxOrder.Helper
             HttpContext.Current.Session[_sessionKey] = new LoginInfo()
             {
                 Sid = model.Sid,
-                UserName = model.UserName
+                UserName = model.UserName,
+                UserImgName = model.UserImgName
             };
 
             return true;
