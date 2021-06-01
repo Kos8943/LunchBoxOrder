@@ -27,6 +27,11 @@
                 width: 200px;
                 height: 200px;
             }
+
+        .pageFontSize {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -35,20 +40,31 @@
             <div class="row">
                 <div class="col-12">
                     <asp:TextBox ID="TxtSearch" runat="server" Placeholder="團名"></asp:TextBox>
-                    <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click"/>
+                    <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
                     <asp:Button ID="btnLogin" runat="server" Text="登入" OnClick="btnLogin_Click" />
                     <asp:Button ID="CreatGroup" runat="server" Text="揪團" OnClick="CreatGroup_Click" />
                 </div>
 
-                <asp:Repeater ID="GroupRepeater" runat="server" OnItemCommand="GroupRepeater_ItemCommand">
+                <asp:Repeater ID="GroupRepeater" runat="server" OnItemCommand="GroupRepeater_ItemCommand" OnItemDataBound="GroupRepeater_ItemDataBound">
                     <ItemTemplate>
                         <a href="CheckOrder.aspx?Sid=<%# Eval("Sid") %>" class="col-12 GroupBorder my-3">
-                            <div class="col-12 row">
-                                <img src="Imgs/<%# Eval("GroupImgName") %>" />
-                                <div class="">
+                            <div class=" row">
+                                <img src="Imgs/<%# Eval("GroupImgName") %>" class="col-3" />
+                                <div class="col-3">
                                     <h2><%# Eval("GroupName") %></h2>
                                     <p>店名:<%# Eval("ShopName") %></p>
-                                    <p>已加入</p>
+                                    <%--<p>已加入</p>--%>
+                                </div>
+                                <div class="col-6 row">
+                                    <asp:Repeater ID="MenuRepeater" runat="server">
+                                        <ItemTemplate>
+                                            <div class="col-3">
+                                                <span><%# Eval("FoodName") %></span>
+                                            </div>
+                                        </ItemTemplate>
+
+                                    </asp:Repeater>
+
                                 </div>
                             </div>
                         </a>
@@ -56,7 +72,10 @@
                 </asp:Repeater>
             </div>
         </div>
-        <uc1:ChangePages runat="server" ID="ChangePages" />
+        <div class="d-flex justify-content-center pageFontSize">
+            <uc1:ChangePages runat="server" ID="ChangePages" />
+        </div>
+
     </form>
 </body>
 </html>

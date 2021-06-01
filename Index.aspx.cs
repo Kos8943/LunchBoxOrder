@@ -1,6 +1,7 @@
 ﻿using LunchBoxOrder.Helper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -77,6 +78,16 @@ namespace LunchBoxOrder
             {
                 Response.Redirect($"~/Index.aspx?Page=1");
             }
+        }
+
+        protected void GroupRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            DataRowView dr = e.Item.DataItem as DataRowView;
+            Repeater menuRepeater = (Repeater)e.Item.FindControl("MenuRepeater");
+            int sid = Convert.ToInt32(dr["Sid"]);
+            DataBaseMethods methods = new DataBaseMethods();
+            menuRepeater.DataSource = methods.GetShopMenu(sid);
+            menuRepeater.DataBind();
         }
     }
 }

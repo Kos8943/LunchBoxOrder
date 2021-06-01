@@ -14,5 +14,7 @@ namespace LunchBoxOrder.Models
         public string Password { get; set; }
 
         public string UserName { get; set; }
+
+        public string UserImgName { get; set; }
     }
 }

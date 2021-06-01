@@ -54,9 +54,8 @@ namespace LunchBoxOrder
                 wherestring = "WHERE GroupName LIKE @GroupName";
             }
 
-
             string queryString = $@"SELECT TOP 5 * FROM 
-                                    (SELECT [Group].[Sid], [Group].GroupImgName, [Group].GroupName, Shop.ShopName, 
+                                    (SELECT [Group].[Sid], [Group].GroupImgName, [Group].GroupName, Shop.ShopName,
                                     ROW_NUMBER() OVER(ORDER BY [Group].[Sid] )  AS ROWSID FROM [Group]
                                     JOIN Shop ON [Group].ShopSid = Shop.Sid {wherestring}) a
                                     WHERE ROWSID > {pageSize * (currentPage - 1)};";
@@ -138,9 +137,7 @@ namespace LunchBoxOrder
             };
                 this.ExecuteNonQuery(queryString, parameters);
             }
-           
-
-            
+                      
         }
 
         public DataTable DelectOrderDetail(int accountSid, int GroupSid)
@@ -168,6 +165,38 @@ namespace LunchBoxOrder
             List<SqlParameter> parameters = new List<SqlParameter>()
             {
                new SqlParameter("@Sid", Sid)
+            };
+
+            var dt = this.GetDataTable(queryString, parameters);
+
+            return dt;
+        }
+
+
+        public void UpdateGroupStatus(int GroupSid, int Status)
+        {
+            string queryString = $@"UPDATE [Group] SET GroupStatus = @GroupStatus WHERE Sid = @Sid;";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@Sid", GroupSid),
+               new SqlParameter("@GroupStatus", Status)
+            };
+
+            this.ExecuteNonQuery(queryString, parameters);
+            
+        }
+
+        public DataTable GetShopMenu(int GroupSid)
+        {
+            string queryString = $@"SELECT FoodName FROM [Group] 
+                                    JOIN Shop ON [Group].ShopSid = Shop.Sid 
+                                    JOIN Menu ON Shop.Sid = Menu.ShopSId 
+                                    WHERE [Group].Sid = @Sid;";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@Sid", GroupSid),
             };
 
             var dt = this.GetDataTable(queryString, parameters);

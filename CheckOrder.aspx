@@ -71,39 +71,43 @@
             height: 35px;
         }
 
-        .totalOrderArea{
-            overflow:auto;
+        .totalOrderArea {
+            overflow: auto;
+            border: 1px solid #000;
+            width: 300px;
+            position: absolute;
+            left: 82%;
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="container my-5 GroupBorder">
-
+            <asp:PlaceHolder ID="PlaceHolder1" runat="server">
+                <div class="totalOrderArea">
+                    <asp:Repeater ID="TotalCountRepeater" runat="server" OnItemDataBound="TotalCountRepeater_ItemDataBound">
+                        <ItemTemplate>
+                            <p><%# Eval("FoodName") %> x <%# Eval("Qty") %></p>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            <asp:Literal ID="TotalPriceLiteral" runat="server"></asp:Literal>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                </div>
+            </asp:PlaceHolder>
             <%-- ----表頭區域---- --%>
             <div class="row m-2">
                 <img src="Imgs/funamori.png" class="GroupImg" runat="server" id="GroupImg" />
                 <div>
                     <h1 runat="server" id="GroupName">團一</h1>
                     <label>狀態:</label>
-                    <asp:DropDownList ID="GroupStatusDropList" runat="server">
+                    <asp:DropDownList ID="GroupStatusDropList" runat="server" OnSelectedIndexChanged="GroupStatusDropList_SelectedIndexChanged">
                         <asp:ListItem Value="0" Text="未結團"></asp:ListItem>
                         <asp:ListItem Value="1" Text="結團"></asp:ListItem>
                         <asp:ListItem Value="2" Text="已到"></asp:ListItem>
                     </asp:DropDownList>
-                    <asp:Button ID="btnChangeStatus" runat="server" Text="修改狀態" />
-                    <asp:PlaceHolder ID="PlaceHolder1" runat="server">
-                        <div class="totalOrderArea">
-                            <asp:Repeater ID="TotalCountRepeater" runat="server" OnItemDataBound="TotalCountRepeater_ItemDataBound">
-                                <ItemTemplate>
-                                    <p><%# Eval("FoodName") %> x <%# Eval("Qty") %></p>
-                                </ItemTemplate>
-                                <FooterTemplate>
-                                    <asp:Literal ID="TotalPriceLiteral" runat="server"></asp:Literal>
-                                </FooterTemplate>
-                            </asp:Repeater>
-                        </div>
-                    </asp:PlaceHolder>
+                    <asp:Button ID="btnChangeStatus" runat="server" Text="修改狀態" OnClick="btnChangeStatus_Click" />
+
 
                 </div>
             </div>
@@ -188,7 +192,7 @@
                 <asp:Button ID="btnConfirm" runat="server" Text="OK" OnClick="btnConfirm_Click" />
             </div>
             <div class="m-3 pr-4 d-flex flex-row-reverse">
-                <asp:Button ID="btnTurnBack" runat="server" Text="返回" />
+                <asp:Button ID="btnTurnBack" runat="server" Text="返回" OnClick="btnTurnBack_Click" />
             </div>
 
 
@@ -216,5 +220,13 @@
             //}
         });
     </script>--%>
+
+    <script>
+        $(window).scroll(function () {
+            var scrollVal = $(this).scrollTop();
+            console.log(scrollVal);
+            $(".totalOrderArea").css({ top: scrollVal + 50});
+        });
+    </script>
 </body>
 </html>

@@ -12,6 +12,7 @@ namespace LunchBoxOrder
 {
     public partial class CheckOrder : System.Web.UI.Page
     {
+        private int Status;
         static List<OrderModel> orderModels = new List<OrderModel>();
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -23,6 +24,8 @@ namespace LunchBoxOrder
                 Response.Redirect("~/Index.aspx");
             }
 
+            
+
             DataBaseMethods methods = new DataBaseMethods();
 
             if(Int32.TryParse(queryString, out Sid))
@@ -33,6 +36,7 @@ namespace LunchBoxOrder
                 this.GroupLeader.Text = $"主揪: {dt.Rows[0]["GroupLeader"]}";
                 this.GroupImg.Src = $"~/Imgs/{dt.Rows[0]["GroupImgName"]}";
                 this.GroupStatusDropList.SelectedValue = dt.Rows[0]["GroupStatus"].ToString();
+                this.Status = (int)dt.Rows[0]["GroupStatus"];
 
                 this.MenuRepeater.DataSource = dt;
                 this.MenuRepeater.DataBind();
@@ -42,10 +46,18 @@ namespace LunchBoxOrder
 
                 this.TotalCountRepeater.DataSource = methods.GetCountTotal(Sid);
                 this.TotalCountRepeater.DataBind();
+
+                LoginInfo loginInfo = HttpContext.Current.Session["IsLogined"] as LoginInfo;
+                if (loginInfo == null || loginInfo.UserName != dt.Rows[0]["GroupLeader"].ToString())
+                {
+                    this.GroupStatusDropList.Enabled = false;
+                    this.PlaceHolder1.Visible = false;
+                    this.btnChangeStatus.Enabled = false;
+                    this.btnConfirm.Enabled = false;
+                }
+
             }
             
-
-
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -55,6 +67,7 @@ namespace LunchBoxOrder
 
         protected void OrderRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 int GroupSid = Convert.ToInt32(Request.QueryString["Sid"]);
@@ -102,15 +115,25 @@ namespace LunchBoxOrder
 
         protected void QtyDropDownList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DropDownList dish = sender as DropDownList;
-            string[] dishToolTip = dish.ToolTip.Split(',');
             string queryGroupSid = Request.QueryString["Sid"];
-            int menuSid = Convert.ToInt32(dishToolTip[1]);
             int Sid;
-            if(!Int32.TryParse(queryGroupSid, out Sid))
+
+            if (!Int32.TryParse(queryGroupSid, out Sid))
             {
                 Response.Redirect("~/Index.aspx");
             }
+
+            if (!LoginHelper.HasLogined())
+            {
+                Response.Write("<Script language='JavaScript'>alert('請先登入帳號');</Script>");
+                Response.Write($"<script language=javascript>window.location.href='CheckOrder.aspx?Sid={Sid}'</script>");
+                return;
+            }
+
+            DropDownList dish = sender as DropDownList;
+            string[] dishToolTip = dish.ToolTip.Split(',');
+            
+            int menuSid = Convert.ToInt32(dishToolTip[1]);        
 
             LoginInfo loginInfo = HttpContext.Current.Session["IsLogined"] as LoginInfo;
 
@@ -141,9 +164,19 @@ namespace LunchBoxOrder
         {
             string Sid = Request.QueryString["Sid"];
             DataBaseMethods methods = new DataBaseMethods();
-            methods.InsertOrder(orderModels);
+
+            if (this.Status > 0)
+            {
+                Response.Write("<Script language='JavaScript'>alert('已經結團囉');</Script>");
+            }
+            else
+            {
+                methods.InsertOrder(orderModels);
+            }
+        
             orderModels.Clear();
-            Response.Redirect($"~/CheckOrder.aspx?Sid={Sid}");
+            Response.Write($"<script language=javascript>window.location.href='CheckOrder.aspx?Sid={Sid}'</script>");
+            //Response.Redirect($"~/CheckOrder.aspx?Sid={Sid}");
         }
 
         int totalPrice;
@@ -162,9 +195,39 @@ namespace LunchBoxOrder
             {
                 Literal literal = (Literal)e.Item.FindControl("TotalPriceLiteral");
 
-                literal.Text = $"總計:{totalPrice}";
+                literal.Text = $"總計:NT$ {totalPrice}元";
             }
             
+        }
+
+        protected void btnChangeStatus_Click(object sender, EventArgs e)
+        {            
+
+            int statusChange = Convert.ToInt32(this.GroupStatusDropList.SelectedValue);
+            int queryGroupSid = Convert.ToInt32(Request.QueryString["Sid"]);
+
+            if (statusChange < this.Status)
+            {
+                Response.Write("<Script language='JavaScript'>alert('無法改成之前的狀態');</Script>");
+                this.GroupStatusDropList.SelectedValue = this.Status.ToString();
+            }
+            else
+            {
+                DataBaseMethods methods = new DataBaseMethods();
+                methods.UpdateGroupStatus(queryGroupSid, statusChange);
+                Response.Write("<Script language='JavaScript'>alert('修改成功');</Script>");
+            }
+        }
+
+        protected void GroupStatusDropList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void btnTurnBack_Click(object sender, EventArgs e)
+        {
+            orderModels.Clear();
+            Response.Redirect("~/Index.aspx");
         }
     }
 }
