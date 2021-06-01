@@ -175,7 +175,9 @@ namespace LunchBoxOrder
             string Sid = Request.QueryString["Sid"];
             DataBaseMethods methods = new DataBaseMethods();
 
-            if (this.Status > 0)
+            var dt = methods.GetSingleGroupDetail(Convert.ToInt32(Sid));
+
+            if (Convert.ToInt32(dt.Rows[0]["GroupStatus"]) > 0 || this.Status > 0)
             {
                 Response.Write("<Script language='JavaScript'>alert('已經結團囉');</Script>");
             }
