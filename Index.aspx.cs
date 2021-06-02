@@ -36,6 +36,11 @@ namespace LunchBoxOrder
                 querySearch = string.Empty;
             }
 
+            if (LoginHelper.HasLogined())
+            {
+                this.btnLoginOut.Enabled = true;
+            }
+
             
             DataBaseMethods methods = new DataBaseMethods();
             this.GroupRepeater.DataSource = methods.GetGroup(out total, querySearch, currentPage);
@@ -88,6 +93,13 @@ namespace LunchBoxOrder
             DataBaseMethods methods = new DataBaseMethods();
             menuRepeater.DataSource = methods.GetShopMenu(sid);
             menuRepeater.DataBind();
+        }
+
+        protected void btnLoginOut_Click(object sender, EventArgs e)
+        {
+            LoginHelper.Logout();
+
+            Response.Redirect("Index.aspx");
         }
     }
 }

@@ -63,6 +63,14 @@
             height: 35px;
             position: absolute;
             top: 75%;
+            left: 75%;
+        }
+
+        #btnClearCart{
+            width: 100px;
+            height: 35px;
+            position: absolute;
+            top: 75%;
             left: 88.5%;
         }
 
@@ -190,6 +198,7 @@
                     </asp:Repeater>
                 </div>
                 <asp:Button ID="btnConfirm" runat="server" Text="OK" OnClick="btnConfirm_Click" />
+                <asp:Button ID="btnClearCart" runat="server" Text="清空購物車" OnClick="btnClearCart_Click" OnClientClick="javascript:return confirm('確定清空購物車?')"/>
             </div>
             <div class="m-3 pr-4 d-flex flex-row-reverse">
                 <asp:Button ID="btnTurnBack" runat="server" Text="返回" OnClick="btnTurnBack_Click" />

@@ -42,6 +42,7 @@
                     <asp:TextBox ID="TxtSearch" runat="server" Placeholder="團名"></asp:TextBox>
                     <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
                     <asp:Button ID="btnLogin" runat="server" Text="登入" OnClick="btnLogin_Click" />
+                    <asp:Button ID="btnLoginOut" runat="server" Text="登出" OnClick="btnLoginOut_Click" Enabled="false"/> 
                     <asp:Button ID="CreatGroup" runat="server" Text="揪團" OnClick="CreatGroup_Click" />
                 </div>
 

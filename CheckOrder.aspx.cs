@@ -246,5 +246,12 @@ namespace LunchBoxOrder
             orderModels.Clear();
             Response.Redirect("~/Index.aspx");
         }
+
+        protected void btnClearCart_Click(object sender, EventArgs e)
+        {
+            orderModels.Clear();
+            string queryGroupSid = Request.QueryString["Sid"];
+            Response.Write($"<script language=javascript>window.location.href='CheckOrder.aspx?Sid={queryGroupSid}'</script>");
+        }
     }
 }
