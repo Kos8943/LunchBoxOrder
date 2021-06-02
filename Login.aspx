@@ -25,6 +25,7 @@
             <asp:TextBox ID="Password" runat="server" AutoCompleteType="None"></asp:TextBox>
             <br />
             <asp:Button ID="btnLogin" runat="server" Text="登入" OnClick="btnLogin_Click"/>
+            <asp:Button ID="btnGoIndex" runat="server" Text="返回首頁" OnClick="btnGoIndex_Click"/>
             <br />
             <asp:Label ID="ErrorMsg" runat="server" Text="" Visible="false"></asp:Label>
 

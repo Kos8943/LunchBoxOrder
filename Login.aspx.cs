@@ -38,5 +38,10 @@ namespace LunchBoxOrder
                 return;
             }
         }
+
+        protected void btnGoIndex_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Index.aspx");
+        }
     }
 }
