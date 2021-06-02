@@ -80,6 +80,7 @@
     <Content Include="ChangePages.ascx" />
     <Content Include="CheckOrder.aspx" />
     <Content Include="CreatOrder.aspx" />
+    <Content Include="DB.sql" />
     <Content Include="Global.asax" />
     <Content Include="Imgs\funamori.png" />
     <Content Include="Imgs\ochaduke.png" />
