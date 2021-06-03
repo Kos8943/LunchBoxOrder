@@ -69,6 +69,7 @@
   <ItemGroup>
     <Content Include="Admin_CreateUserAccount.aspx" />
     <Content Include="Admin_Index.aspx" />
+    <Content Include="Admin_ShopAndMenuList.aspx" />
     <Content Include="Admin_UserAccountList.aspx" />
     <Content Include="Bootstrap\css\bootstrap-grid.css" />
     <Content Include="Bootstrap\css\bootstrap-grid.min.css" />
@@ -129,6 +130,13 @@
     </Compile>
     <Compile Include="Admin_Index.aspx.designer.cs">
       <DependentUpon>Admin_Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin_ShopAndMenuList.aspx.cs">
+      <DependentUpon>Admin_ShopAndMenuList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin_ShopAndMenuList.aspx.designer.cs">
+      <DependentUpon>Admin_ShopAndMenuList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin_UserAccountList.aspx.cs">
       <DependentUpon>Admin_UserAccountList.aspx</DependentUpon>

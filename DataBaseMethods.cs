@@ -278,5 +278,40 @@ namespace LunchBoxOrder
 
             this.ExecuteNonQuery(queryString, parameters);
         }
+
+        public DataTable Admin_GetShopMenu(out int? countMenu, int shopSid, int currentPage = 1, int pageSize = 10)
+        {
+            string queryString = $@"SELECT TOP 10 * FROM
+                                    (SELECT Shop.[Sid], ShopName, FoodName, Price,
+                                    ROW_NUMBER() OVER(ORDER BY Menu.[Sid]) AS RowSid
+                                    FROM Shop Shop JOIN Menu ON Shop.Sid = Menu.ShopSId WHERE Shop.[Sid] = @ShopSid) ShopDetail
+                                    WHERE RowSid > {pageSize * (currentPage - 1)};";
+
+            string countQuery = $@"SELECT COUNT([Sid]) FROM Menu WHERE ShopSId = @ShopSId;";
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+                new SqlParameter("@ShopSid", shopSid)
+            };
+
+            countMenu = this.GetScale(countQuery, parameters) as int?;
+
+            var dt = this.GetDataTable(queryString, parameters);
+
+            return dt;
+        }
+
+
+        public DataTable Admin_GetAllShop()
+        {
+            string queryString = $@"SELECT [Sid], ShopName FROM Shop;";
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            var dt = this.GetDataTable(queryString, parameters);
+
+
+            return dt;
+        }
+
+
     }
 }
