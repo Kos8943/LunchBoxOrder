@@ -49,7 +49,9 @@ namespace LunchBoxOrder.Helper
             {
                 Sid = model.Sid,
                 UserName = model.UserName,
-                UserImgName = model.UserImgName
+                UserImgName = model.UserImgName,
+                IsAdmin = model.IsAdmin
+
             };
 
             return true;

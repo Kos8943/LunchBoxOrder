@@ -29,7 +29,16 @@ namespace LunchBoxOrder
 
             if(LoginHelper.TryLogin(account, password))
             {
-                Response.Redirect("~/Index.aspx");
+                LoginInfo loginInfo = HttpContext.Current.Session["IsLogined"] as LoginInfo;
+                if(loginInfo.IsAdmin == 1)
+                {
+                    Response.Redirect("~/Admin_Index.aspx");
+                }
+                else
+                {
+                    Response.Redirect("~/Index.aspx");
+                }
+                
             }
             else
             {

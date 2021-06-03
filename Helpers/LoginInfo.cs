@@ -12,5 +12,7 @@ namespace LunchBoxOrder.Helper
         public string UserName { get; set; }
 
         public string UserImgName { get; set; }
+
+        public int IsAdmin { get; set; }
     }
 }

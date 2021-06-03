@@ -204,5 +204,79 @@ namespace LunchBoxOrder
 
             return dt;
         }
+
+
+        public DataTable GetUserAccount(out int total, string account, int currentPage = 1, int pageSize = 10)
+        {
+            //string queryString = $@"SELECT * FROM [Group] JOIN Shop ON [Group].ShopSid = Shop.Sid;";
+            string wherestring = string.Empty;
+            if (!string.IsNullOrWhiteSpace(account))
+            {
+                wherestring = "AND Account LIKE @Account";
+            }
+
+            string queryString = $@"SELECT TOP 10 * FROM 
+                                    (SELECT [Sid], Account, UserName,
+                                    ROW_NUMBER() OVER(ORDER BY UserAccount.[Sid] ) AS RowSid FROM UserAccount) a
+                                    WHERE ROWSID > {pageSize * (currentPage -1)};";
+
+            var countQuery = $@"SELECT COUNT([Sid]) From [UserAccount] {wherestring};";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@Account", "%" + account + "%"),
+            };
+
+            var dt = this.GetDataTable(queryString, parameters);
+            var dataTotal = this.GetScale(countQuery, parameters) as int?;
+            total = (dataTotal.HasValue) ? dataTotal.Value : 0;
+            return dt;
+        }
+
+        public void InsertNewAccount(AccountModel model)
+        {
+            string queryString = $@"INSERT INTO [UserAccount](Account, Password, UserName, UserImgName, IsAdmin)
+                                                VALUES(@Account, @Password, @UserName, @UserImgName, @IsAdmin);";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@Account", model.Account),
+               new SqlParameter("@Password", model.Password),
+               new SqlParameter("@UserName", model.UserName),
+               new SqlParameter("@UserImgName", model.UserImgName),
+               new SqlParameter("@IsAdmin", model.IsAdmin)
+            };
+
+            this.ExecuteNonQuery(queryString, parameters);
+        }
+
+        public DataTable GetSingleAccount(int AccountSid)
+        {
+            string queryString = $@"SELECT [Sid], Account, [Password], UserName, IsAdmin, UserImgName From UserAccount WHERE [Sid] = @Sid;";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@Sid", AccountSid)
+            };
+
+            var dt = this.GetDataTable(queryString, parameters);
+            return dt;
+        }
+
+        public void UpDateAccount(AccountModel model ,int Sid)
+        {
+            string queryString = $@"UPDATE UserAccount SET [Password] = @Password, UserName = @UserName, IsAdmin = @IsAdmin, UserImgName = @UserImgName WHERE Sid = @Sid;";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+                new SqlParameter("@Sid", Sid),
+               new SqlParameter("@Password", model.Password),
+               new SqlParameter("@UserName", model.UserName),
+               new SqlParameter("@UserImgName", model.UserImgName),
+               new SqlParameter("@IsAdmin", model.IsAdmin)
+            };
+
+            this.ExecuteNonQuery(queryString, parameters);
+        }
     }
 }

@@ -55,6 +55,11 @@ namespace LunchBoxOrder.Managers
                 {
                     model.UserImgName = (string)dt.Rows[0]["UserImgName"];
                 }
+
+                if (!Convert.IsDBNull(dt.Rows[0]["IsAdmin"]))
+                {
+                    model.IsAdmin = (int)dt.Rows[0]["IsAdmin"];
+                }
             }
             return model;
         }

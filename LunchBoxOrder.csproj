@@ -67,6 +67,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin_CreateUserAccount.aspx" />
+    <Content Include="Admin_Index.aspx" />
+    <Content Include="Admin_UserAccountList.aspx" />
     <Content Include="Bootstrap\css\bootstrap-grid.css" />
     <Content Include="Bootstrap\css\bootstrap-grid.min.css" />
     <Content Include="Bootstrap\css\bootstrap-reboot.css" />
@@ -82,16 +85,58 @@
     <Content Include="CreatOrder.aspx" />
     <Content Include="DB.sql" />
     <Content Include="Global.asax" />
+    <Content Include="Imgs\120.jpg" />
+    <Content Include="Imgs\3.png" />
+    <Content Include="Imgs\80.jpg" />
+    <Content Include="Imgs\90.jpg" />
+    <Content Include="Imgs\businessman.png" />
     <Content Include="Imgs\funamori.png" />
+    <Content Include="Imgs\girl_fashion.png" />
     <Content Include="Imgs\ochaduke.png" />
     <Content Include="Imgs\perimeni.png" />
     <Content Include="Imgs\pizza.png" />
+    <Content Include="Imgs\shop1.png" />
+    <Content Include="Imgs\shop2.jpg" />
+    <Content Include="Imgs\unnamed.jpg" />
+    <Content Include="Imgs\w1000.jpg" />
+    <Content Include="Imgs\w960.jpg" />
+    <Content Include="Imgs\w970.jpg" />
+    <Content Include="Imgs\w980.jpg" />
+    <Content Include="Imgs\w990.jpg" />
     <Content Include="Index.aspx" />
     <Content Include="JQuery\jquery-3.6.0.min.js" />
     <Content Include="Login.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminSide.Master.cs">
+      <DependentUpon>AdminSide.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminSide.Master.designer.cs">
+      <DependentUpon>AdminSide.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Admin_CreateUserAccount.aspx.cs">
+      <DependentUpon>Admin_CreateUserAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin_CreateUserAccount.aspx.designer.cs">
+      <DependentUpon>Admin_CreateUserAccount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin_Index.aspx.cs">
+      <DependentUpon>Admin_Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin_Index.aspx.designer.cs">
+      <DependentUpon>Admin_Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin_UserAccountList.aspx.cs">
+      <DependentUpon>Admin_UserAccountList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin_UserAccountList.aspx.designer.cs">
+      <DependentUpon>Admin_UserAccountList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ChangePages.ascx.cs">
       <DependentUpon>ChangePages.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -151,6 +196,7 @@
     <Content Include="Bootstrap\js\bootstrap.bundle.min.js.map" />
     <Content Include="Bootstrap\js\bootstrap.js.map" />
     <Content Include="Bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="AdminSide.Master" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
