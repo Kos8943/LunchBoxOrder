@@ -1,19 +1,22 @@
 ﻿using LunchBoxOrder.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace LunchBoxOrder
 {
-    public partial class Admin_ShopAndMenuList : System.Web.UI.Page
+    public partial class Admin_CreateMenu : System.Web.UI.Page
     {
-        DataBaseMethods methods = new DataBaseMethods();
+        bool IsCreateMode = true;
         private string[] _allowFileExe = { ".jpg", ".png", ".gif" };
         private string _saveFolder = "~/Imgs";
+        DataBaseMethods methods = new DataBaseMethods();
+        private string _oldImgName = string.Empty;
         protected void Page_Init(object sender, EventArgs e)
         {
             var dt = methods.Admin_GetAllShop();
@@ -23,64 +26,60 @@ namespace LunchBoxOrder
             this.ShopDropDownList.DataValueField = "Sid";
             this.ShopDropDownList.DataBind();
 
-            string queryShopSid = Request.QueryString["ShopSid"];
-            int ShopSid = 0;
-
-            if (!string.IsNullOrWhiteSpace(queryShopSid))
+            string menuQueryString = Request.QueryString["menuSid"];
+            
+            if (string.IsNullOrWhiteSpace(menuQueryString))
             {
-                Int32.TryParse(queryShopSid, out ShopSid);
-                this.ShopDropDownList.SelectedValue = queryShopSid;
+                return;
             }
             else
             {
-                if (dt.Rows.Count != 0)
+                IsCreateMode = false;
+                int menuSid;
+                if(Int32.TryParse(menuQueryString, out menuSid))
                 {
-                    ShopSid = Convert.ToInt32(dt.Rows[0]["Sid"]);
+                    this.ShopDropDownList.Enabled = false;
+                    DataTable menuDataTable = methods.Admin_GetSingleMenu(menuSid);
+
+                    if(menuDataTable.Rows.Count != 0)
+                    {
+                        this.ShopDropDownList.SelectedValue = menuDataTable.Rows[0]["ShopSid"].ToString();
+                        this.FoodName.Text = menuDataTable.Rows[0]["FoodName"].ToString();
+                        this.Price.Text = menuDataTable.Rows[0]["Price"].ToString();
+                        this._oldImgName = menuDataTable.Rows[0]["FoodImg"].ToString();
+                    }
+                    else
+                    {
+                        Response.Redirect("~/Admin_CreateMenu.aspx");
+                    }
+                    
+                }
+                else
+                {
+                    Response.Redirect("~/Admin_CreateMenu.aspx");
                 }
             }
-            
-            int? totalMenu;
-            this.ShopMenuRepeater.DataSource = methods.Admin_GetShopMenu(out totalMenu, ShopSid);
-            this.ShopMenuRepeater.DataBind();
-
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             
         }
 
-        protected void ShopDropDownList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string shopSid = this.ShopDropDownList.SelectedValue;
-
-            Response.Redirect($"~/Admin_ShopAndMenuList.aspx?Page=1&ShopSid={shopSid}");
-        }
-
         protected void btnCreateShop_Click(object sender, EventArgs e)
         {
-            string shopName = this.ShopName.Text;
+            MenuModel menuModel = new MenuModel();
+            int shopSid = Convert.ToInt32(this.ShopDropDownList.SelectedValue);
             string foodName = this.FoodName.Text;
             string txtPrice = this.Price.Text;
             var foodImg = this.FoodImgFile;
-
             bool canSubmit = true;
-            ShopModel shopModel = new ShopModel();
-            MenuModel muneModel = new MenuModel();
-            if (!string.IsNullOrWhiteSpace(shopName))
-            {
 
-                shopModel.ShopName = shopName;              
-            }
-            else
-            {
-                this.LabelMsg.Text = "請輸入店名";
-                this.LabelMsg.Visible = true;
-                canSubmit = false;
-            }
+            menuModel.ShopSid = shopSid;
 
             if (!string.IsNullOrWhiteSpace(foodName))
             {
-                muneModel.FoodName = foodName;
+                menuModel.FoodName = foodName;
             }
             else
             {
@@ -94,11 +93,11 @@ namespace LunchBoxOrder
                 int price;
                 if(Int32.TryParse(txtPrice, out price))
                 {
-                    muneModel.Price = price;
+                    menuModel.Price = price;
                 }
                 else
                 {
-                    this.PriceLabel.Text = "請輸入數字";
+                    this.PriceLabel.Text = "只能輸入數字";
                     this.PriceLabel.Visible = true;
                     canSubmit = false;
                 }
@@ -112,14 +111,21 @@ namespace LunchBoxOrder
 
             if (foodImg.HasFile)
             {
-                if (CheckPhotoExe(System.IO.Path.GetExtension(foodImg.FileName).ToLower()))
+                if (this.CheckPhotoExe(Path.GetExtension(foodImg.FileName).ToLower()))
                 {
+                    if (IsCreateMode)
+                    {
+                        menuModel.FoodImgName = this.GetNewFileName(foodImg, "");
+                    }
+                    else
+                    {
+                        menuModel.FoodImgName = this.GetNewFileName(foodImg, _oldImgName);
+                    }
                     
-                    muneModel.FoodImgName = GetNewFileName(foodImg, "");
                 }
                 else
                 {
-                    this.FoodImgFileLabel.Text = "圖片格式錯誤";
+                    this.FoodImgFileLabel.Text = "上傳圖片格式錯誤";
                     this.FoodImgFileLabel.Visible = true;
                     canSubmit = false;
                 }
@@ -131,13 +137,25 @@ namespace LunchBoxOrder
                 canSubmit = false;
             }
 
-
-            if (canSubmit)
+            if (canSubmit) 
             {
-                methods.CreateNewShop(shopModel, muneModel);
-                Response.Write("<Script language='JavaScript'>alert('新增成功');</Script>");
-                Response.Write($"<script language=javascript>window.location.href='Admin_ShopAndMenuList.aspx'</script>");
+                if (IsCreateMode)
+                {
+                    methods.Admin_CreateNewMenu(menuModel);
+                    this.submitMsg.Text = "新增成功";
+                    this.submitMsg.Visible = true;
+
+                }
+                else
+                {
+                    menuModel.Sid = Convert.ToInt32(Request.QueryString["menuSid"]);
+                    methods.Admin_UpDateMenu(menuModel);
+                    this.submitMsg.Text = "修改成功";
+                    this.submitMsg.Visible = true;
+                }
             }
+
+
         }
 
         private bool CheckPhotoExe(string fileName)
@@ -180,27 +198,9 @@ namespace LunchBoxOrder
             return newFileName;
         }
 
-        protected void CreateMenu_Click(object sender, EventArgs e)
+        protected void btnCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Admin_CreateMenu.aspx");
-        }
-
-        protected void ShopMenuRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            string comName = e.CommandName;
-            string comArug = e.CommandArgument.ToString();
-
-            if("UpDate" == comName)
-            {
-                Response.Redirect($"~/Admin_CreateMenu.aspx?menuSid={comArug}");
-            }
-
-            if("Delete" == comName)
-            {
-                methods.Admin_DeleteMenu(Convert.ToInt32(comArug));
-
-                Response.Redirect($"~/Admin_ShopAndMenuList.aspx");
-            }
+            Response.Redirect("~/Admin_ShopAndMenuList.aspx");
         }
     }
 }

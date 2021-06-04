@@ -44,6 +44,7 @@
                     <asp:Button ID="btnLogin" runat="server" Text="登入" OnClick="btnLogin_Click" />
                     <asp:Button ID="btnLoginOut" runat="server" Text="登出" OnClick="btnLoginOut_Click" Enabled="false"/> 
                     <asp:Button ID="CreatGroup" runat="server" Text="揪團" OnClick="CreatGroup_Click" />
+                    <asp:Button ID="btnBackSide" runat="server" Text="管理後台" Visible="false" OnClick="btnBackSide_Click"/>
                 </div>
 
                 <asp:Repeater ID="GroupRepeater" runat="server" OnItemCommand="GroupRepeater_ItemCommand" OnItemDataBound="GroupRepeater_ItemDataBound">

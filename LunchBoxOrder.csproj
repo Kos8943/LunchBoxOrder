@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin_CreateMenu.aspx" />
     <Content Include="Admin_CreateUserAccount.aspx" />
     <Content Include="Admin_Index.aspx" />
     <Content Include="Admin_ShopAndMenuList.aspx" />
@@ -116,6 +117,13 @@
     </Compile>
     <Compile Include="AdminSide.Master.designer.cs">
       <DependentUpon>AdminSide.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Admin_CreateMenu.aspx.cs">
+      <DependentUpon>Admin_CreateMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin_CreateMenu.aspx.designer.cs">
+      <DependentUpon>Admin_CreateMenu.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin_CreateUserAccount.aspx.cs">
       <DependentUpon>Admin_CreateUserAccount.aspx</DependentUpon>

@@ -11,88 +11,106 @@ namespace LunchBoxOrder
 {
 
 
-    public partial class Index
+    public partial class Admin_CreateMenu
     {
 
         /// <summary>
-        /// form1 控制項。
+        /// LabelMsg 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Label LabelMsg;
 
         /// <summary>
-        /// TxtSearch 控制項。
+        /// ShopDropDownList 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtSearch;
+        protected global::System.Web.UI.WebControls.DropDownList ShopDropDownList;
 
         /// <summary>
-        /// btnSearch 控制項。
+        /// FoodNameLabel 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.Label FoodNameLabel;
 
         /// <summary>
-        /// btnLogin 控制項。
+        /// FoodName 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.TextBox FoodName;
 
         /// <summary>
-        /// btnLoginOut 控制項。
+        /// PriceLabel 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLoginOut;
+        protected global::System.Web.UI.WebControls.Label PriceLabel;
 
         /// <summary>
-        /// CreatGroup 控制項。
+        /// Price 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button CreatGroup;
+        protected global::System.Web.UI.WebControls.TextBox Price;
 
         /// <summary>
-        /// btnBackSide 控制項。
+        /// FoodImgFileLabel 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBackSide;
+        protected global::System.Web.UI.WebControls.Literal FoodImgFileLabel;
 
         /// <summary>
-        /// GroupRepeater 控制項。
+        /// FoodImgFile 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater GroupRepeater;
+        protected global::System.Web.UI.WebControls.FileUpload FoodImgFile;
 
         /// <summary>
-        /// ChangePages 控制項。
+        /// btnCreateShop 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::LunchBoxOrder.ChangePages ChangePages;
+        protected global::System.Web.UI.WebControls.Button btnCreateShop;
+
+        /// <summary>
+        /// btnCancel 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancel;
+
+        /// <summary>
+        /// submitMsg 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label submitMsg;
     }
 }

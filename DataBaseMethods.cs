@@ -282,7 +282,7 @@ namespace LunchBoxOrder
         public DataTable Admin_GetShopMenu(out int? countMenu, int shopSid, int currentPage = 1, int pageSize = 10)
         {
             string queryString = $@"SELECT * FROM
-                                    (SELECT Shop.[Sid], ShopName, FoodName, Price,
+                                    (SELECT Shop.[Sid], ShopName, FoodName, Price, Menu.[SId] AS MenuSid,
                                     ROW_NUMBER() OVER(ORDER BY Menu.[Sid]) AS RowSid
                                     FROM Shop Shop JOIN Menu ON Shop.Sid = Menu.ShopSId WHERE Shop.[Sid] = @ShopSid) ShopDetail
                                     WHERE RowSid > {pageSize * (currentPage - 1)};";
@@ -339,6 +339,63 @@ namespace LunchBoxOrder
             };
 
             this.ExecuteNonQuery(menuQueryString, MenuParameters);
+        }
+
+
+        public void Admin_CreateNewMenu(MenuModel model)
+        {
+            string queryString = $@"INSERT INTO [Menu](ShopSid, FoodName, Price, FoodImg)
+                                                VALUES(@ShopSid, @FoodName, @Price, @FoodImg);";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@ShopSid", model.ShopSid),
+               new SqlParameter("@FoodName", model.FoodName),
+               new SqlParameter("@Price", model.Price),
+               new SqlParameter("@FoodImg", model.FoodImgName)
+            };
+
+            this.ExecuteNonQuery(queryString, parameters);
+        }
+
+        public DataTable Admin_GetSingleMenu(int menuSid)
+        {
+            string queryString = $@"SELECT * FROM Menu WHERE Sid = @Sid;";
+            List<SqlParameter> parameters = new List<SqlParameter>() 
+            {
+                new SqlParameter("@Sid", menuSid)
+            };
+
+            var dt = this.GetDataTable(queryString, parameters);
+
+            return dt;
+        }
+
+        public void Admin_UpDateMenu(MenuModel model)
+        {
+            string queryString = $@"UPDATE [Menu] SET FoodName = @FoodName, Price = @Price, FoodImg = @FoodImg WHERE Sid = @Sid;";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@Sid", model.Sid),
+               new SqlParameter("@FoodName", model.FoodName),
+               new SqlParameter("@Price", model.Price),
+               new SqlParameter("@FoodImg", model.FoodImgName)
+            };
+
+            this.ExecuteNonQuery(queryString, parameters);
+        }
+
+        public void Admin_DeleteMenu(int menuSid)
+        {
+            string queryString = $@"Delete [Menu] WHERE Sid = @Sid;";
+
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+               new SqlParameter("@Sid", menuSid)
+            };
+
+            this.ExecuteNonQuery(queryString, parameters);
         }
     }
 }

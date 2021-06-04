@@ -13,7 +13,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <%--<asp:Button type="Button" ID="Create" runat="server" CssClass="btn btn-info" Text="新增店家" />--%>
     <button type="Button" id="Create" class="btn btn-info">新增店家</button>
-    <asp:Button ID="CreateMenu" runat="server" CssClass="btn btn-primary" Text="新增菜單" />
+    <asp:Button ID="CreateMenu" runat="server" CssClass="btn btn-primary" Text="新增菜單" OnClick="CreateMenu_Click"/>
 
         <div class="form-group createShopArea">
             <br />
@@ -34,7 +34,7 @@
                 <asp:FileUpload ID="FoodImgFile" CssClass="form-control-file" runat="server" />
             <br />
             <asp:Button class="btn btn-primary" ID="btnCreateShop" runat="server" Text="建立" OnClick="btnCreateShop_Click"/>
-            <button></button>
+            
         </div>
 
     <br />
@@ -50,15 +50,15 @@
             </tr>
         </thead>
         <tbody>
-            <asp:Repeater ID="ShopMenuRepeater" runat="server">
+            <asp:Repeater ID="ShopMenuRepeater" runat="server" OnItemCommand="ShopMenuRepeater_ItemCommand">
                 <ItemTemplate>
                     <tr>
                         <th scope="row"><%# Eval("RowSid") %></th>
                         <td><%# Eval("FoodName") %></td>
                         <td><%# Eval("Price") %></td>
                         <td>
-                            <asp:Button ID="btnModify" runat="server" Text="修改" />
-                            <asp:Button ID="btnDelete" runat="server" Text="刪除" />
+                            <asp:Button ID="btnModify" runat="server" Text="修改" CommandArgument='<%# Eval("MenuSid") %>' CommandName="UpDate"/>
+                            <asp:Button ID="btnDelete" runat="server" Text="刪除" CommandArgument='<%# Eval("MenuSid") %>' CommandName="Delete" OnClientClick="javascript:return confirm('確定刪除?')"/>
                         </td>
                     </tr>
                 </ItemTemplate>

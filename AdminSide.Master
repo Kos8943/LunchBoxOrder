@@ -30,6 +30,9 @@
                  <li class="nav-item">
                     <a class="nav-link" href="Admin_ShopAndMenuList.aspx">店家菜單</a>
                 </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="Index.aspx">我只是想點餐</a>
+                </li>
             </ul>
 
         </div>

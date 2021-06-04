@@ -39,6 +39,13 @@ namespace LunchBoxOrder
             if (LoginHelper.HasLogined())
             {
                 this.btnLoginOut.Enabled = true;
+
+                LoginInfo loginInfo = HttpContext.Current.Session["IsLogined"] as LoginInfo;
+
+                if(loginInfo.IsAdmin == 1)
+                {
+                    this.btnBackSide.Visible = true;
+                }
             }
 
             
@@ -100,6 +107,11 @@ namespace LunchBoxOrder
             LoginHelper.Logout();
 
             Response.Redirect("Index.aspx");
+        }
+
+        protected void btnBackSide_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Admin_Index.aspx");
         }
     }
 }
