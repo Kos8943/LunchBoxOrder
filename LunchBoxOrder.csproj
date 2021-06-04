@@ -190,7 +190,9 @@
     <Compile Include="Managers\AccountManager.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
+    <Compile Include="Models\MenuModel.cs" />
     <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\ShopModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

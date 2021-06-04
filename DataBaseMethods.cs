@@ -281,7 +281,7 @@ namespace LunchBoxOrder
 
         public DataTable Admin_GetShopMenu(out int? countMenu, int shopSid, int currentPage = 1, int pageSize = 10)
         {
-            string queryString = $@"SELECT TOP 10 * FROM
+            string queryString = $@"SELECT * FROM
                                     (SELECT Shop.[Sid], ShopName, FoodName, Price,
                                     ROW_NUMBER() OVER(ORDER BY Menu.[Sid]) AS RowSid
                                     FROM Shop Shop JOIN Menu ON Shop.Sid = Menu.ShopSId WHERE Shop.[Sid] = @ShopSid) ShopDetail
@@ -312,6 +312,33 @@ namespace LunchBoxOrder
             return dt;
         }
 
+        public void CreateNewShop(ShopModel model, MenuModel menuModel)
+        {
+            string queryString = $@"INSERT INTO Shop(ShopName)
+                                            VALUES(@ShopName)";
+            List<SqlParameter> parameters = new List<SqlParameter>()
+            {
+                new SqlParameter("@ShopName", model.ShopName)
+            };
 
+            this.ExecuteNonQuery(queryString, parameters);
+
+            string ShopSidQueryString = $@"SELECT TOP 1 [Sid] FROM Shop ORDER BY [Sid] DESC; ";
+            List<SqlParameter> ShopSidParameters = new List<SqlParameter>();
+            int maxSid = (int)this.GetScale(ShopSidQueryString, ShopSidParameters);
+
+            string menuQueryString = $@"INSERT INTO Menu(ShopSId, FoodName, Price, FoodImg) 
+	                                            VALUES( @ShopSId, @FoodName, @Price, @FoodImg );";
+
+            List<SqlParameter> MenuParameters = new List<SqlParameter>() 
+            {
+                new SqlParameter("@ShopSId", menuModel.ShopSid = maxSid),
+                new SqlParameter("@FoodName", menuModel.FoodName),
+                new SqlParameter("@Price", menuModel.Price),
+                new SqlParameter("@FoodImg", menuModel.FoodImgName)
+            };
+
+            this.ExecuteNonQuery(menuQueryString, MenuParameters);
+        }
     }
 }
