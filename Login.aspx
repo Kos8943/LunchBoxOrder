@@ -22,7 +22,7 @@
             <asp:TextBox ID="Account" runat="server" AutoCompleteType="None"></asp:TextBox>
             <br />
             <lebel for="Password">密碼</lebel>
-            <asp:TextBox ID="Password" runat="server" AutoCompleteType="None"></asp:TextBox>
+            <asp:TextBox ID="Password" runat="server" AutoCompleteType="None" TextMode="Password"></asp:TextBox>
             <br />
             <asp:Button ID="btnLogin" runat="server" Text="登入" OnClick="btnLogin_Click"/>
             <asp:Button ID="btnGoIndex" runat="server" Text="返回首頁" OnClick="btnGoIndex_Click"/>

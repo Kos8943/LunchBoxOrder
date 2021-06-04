@@ -56,7 +56,7 @@ namespace LunchBoxOrder
 
             string queryString = $@"SELECT TOP 5 * FROM 
                                     (SELECT [Group].[Sid], [Group].GroupImgName, [Group].GroupName, Shop.ShopName,
-                                    ROW_NUMBER() OVER(ORDER BY [Group].[Sid] )  AS ROWSID FROM [Group]
+                                    ROW_NUMBER() OVER(ORDER BY [Group].[Sid] DESC)  AS ROWSID FROM [Group]
                                     JOIN Shop ON [Group].ShopSid = Shop.Sid WHERE [Group].GroupStatus != 2 {wherestring}) a
                                     WHERE ROWSID > {pageSize * (currentPage - 1)};";
 

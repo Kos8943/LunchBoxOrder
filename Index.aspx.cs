@@ -16,7 +16,15 @@ namespace LunchBoxOrder
             //DataBaseMethods methods = new DataBaseMethods();
             //this.GroupRepeater.DataSource = methods.GetGroup();
             //this.GroupRepeater.DataBind();
-
+            string querySearch = Request.QueryString["GroupName"];
+            if (string.IsNullOrWhiteSpace(querySearch))
+            {
+                querySearch = string.Empty;
+            }
+            else
+            {
+                this.TxtSearch.Text = querySearch;
+            }
 
         }
 
@@ -35,6 +43,7 @@ namespace LunchBoxOrder
             {
                 querySearch = string.Empty;
             }
+            
 
             if (LoginHelper.HasLogined())
             {
